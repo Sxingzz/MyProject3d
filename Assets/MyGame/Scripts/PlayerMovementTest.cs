@@ -1,9 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovementTest : MonoBehaviour
 {
+    [SerializeField]
+    private Animator playerAnim;
+
     [SerializeField]
     private float moveSpeed;
     [SerializeField]
@@ -32,8 +37,11 @@ public class PlayerMovementTest : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        playerAnim = GetComponent<Animator>();
+
         characterController = GetComponent<CharacterController>();
         originalStepOffset = characterController.stepOffset;
+
     }
 
     // Update is called once per frame
@@ -47,8 +55,11 @@ public class PlayerMovementTest : MonoBehaviour
         
         print($"Vector Magnitude Before normalize: {movementDirection.magnitude}");
 
-        float magnitude = movementDirection.magnitude;
-        magnitude = Mathf.Clamp01( magnitude); // giới hạn giá trị magnitude từ 0 đến 1
+        float Inputmagnitude = Mathf.Clamp01(movementDirection.magnitude);   // giới hạn giá trị magnitude từ 0 đến 1
+
+        playerAnim.SetFloat("Input Magnitude", Inputmagnitude, 0.05f, Time.deltaTime);
+
+        float speed = Inputmagnitude * moveSpeed;
 
         movementDirection.Normalize(); // chuẩn hóa vector để khi đi xéo vẫn giữ tốc độ là 1
         print($"Vector Magnitude After normalize: {movementDirection.magnitude}");
@@ -87,16 +98,25 @@ public class PlayerMovementTest : MonoBehaviour
             characterController.stepOffset = 0; // đang nhảy k tính đến việc bước lên cầu thang (StepOffset) tránh lỗi bị dính lên tường
         }
 
-        Vector3 velocity = moveSpeed *  magnitude * movementDirection;
-        velocity.y = yForce;
-
-        characterController.Move(velocity * Time.deltaTime); // move k tự nhân time.deltatime
-
-        if(movementDirection != Vector3.zero ) // hướng của charactor
+        if(movementDirection != Vector3.zero ) // hướng của character, nếu mà movementDirection khác 0 thì di chuyển
         {
+            playerAnim.SetBool("IsMoving", true);
+
             Quaternion toRotation = Quaternion.LookRotation(movementDirection, Vector3.up);
 
             transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, turnSpeed * Time.deltaTime);
         }
+        else
+        {
+            playerAnim.SetBool("IsMoving", false);
+        }
+
+    }
+    private void OnAnimatorMove()
+    {
+        Vector3 velocity = playerAnim.deltaPosition;
+        velocity.y = yForce * Time.deltaTime;
+
+        characterController.Move(velocity); // Move: sẽ k tự nhân time.deltatime
     }
 }
