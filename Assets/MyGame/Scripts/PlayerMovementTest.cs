@@ -11,6 +11,13 @@ public class PlayerMovementTest : MonoBehaviour
 
     [SerializeField]
     private float moveSpeed;
+
+    [SerializeField]
+    private float jumpSpeed;
+
+    [SerializeField]
+    private float gravityMultiplier;
+
     [SerializeField]
     private float turnSpeed; // tốc độ xoay
 
@@ -31,7 +38,10 @@ public class PlayerMovementTest : MonoBehaviour
     private CharacterController characterController;
 
     private float? lastGroundedTime; // thời gian cuối cùng character chạm đất, ? có thể null cũng dc
-    private float? jumpButtonPressTime; 
+    private float? jumpButtonPressTime;
+
+    private bool isJumping;
+    private bool isGrounded;
   
 
     // Start is called before the first frame update
@@ -59,7 +69,7 @@ public class PlayerMovementTest : MonoBehaviour
 
         playerAnim.SetFloat("Input Magnitude", Inputmagnitude, 0.05f, Time.deltaTime);
 
-        float speed = Inputmagnitude * moveSpeed;
+        //float speed = Inputmagnitude * moveSpeed;
 
         movementDirection.Normalize(); // chuẩn hóa vector để khi đi xéo vẫn giữ tốc độ là 1
         print($"Vector Magnitude After normalize: {movementDirection.magnitude}");
@@ -69,7 +79,14 @@ public class PlayerMovementTest : MonoBehaviour
         // Jump
         // Koyote time là khoảng thời gian nhỏ mà khi vào khoảng time đó character vẫn jump dc. (chỉ nên dùng trong trường hợp character đi nhanh)
 
-        yForce += Physics.gravity.y * Time.deltaTime; // cho trọng lực tác động, character sẽ tự rơi xuống khi jump
+        float gravity = Physics.gravity.y * gravityMultiplier;
+
+        if(isJumping && yForce > 0 && Input.GetButton("Jump") == false) // giữ cách thì gravity *2
+        {
+            gravity *= 2;
+        }
+
+        yForce += gravity * Time.deltaTime; // cho trọng lực tác động, character sẽ tự rơi xuống khi jump
 
         if (characterController.isGrounded)
         {
@@ -85,10 +102,21 @@ public class PlayerMovementTest : MonoBehaviour
         {
             yForce = -0.5f; // set character chạm đất
             characterController.stepOffset = originalStepOffset; // còn nếu bình thường thì set lại stepoffset như ban đầu
+            playerAnim.SetBool("IsGrounded", true);
+            isGrounded = true;
+
+            playerAnim.SetBool("IsJumping", false);
+            isJumping = false;
+
+            playerAnim.SetBool("IsFalling", false );
+            
 
             if (Time.time - jumpButtonPressTime <= jumpButtonGracePeriod)
             {
-                yForce = jumpForce;
+                yForce = Mathf.Sqrt(jumpSpeed * -3.0f * gravity);
+
+                playerAnim.SetBool("IsJumping", true);
+                isJumping = true;
                 jumpButtonPressTime = null;
                 lastGroundedTime = null;
             }
@@ -96,6 +124,13 @@ public class PlayerMovementTest : MonoBehaviour
         else
         {
             characterController.stepOffset = 0; // đang nhảy k tính đến việc bước lên cầu thang (StepOffset) tránh lỗi bị dính lên tường
+            playerAnim.SetBool("IsGrounded", false);
+            isGrounded = false;
+
+            if((isJumping && yForce < 0) || yForce < -2)
+            {
+                playerAnim.SetBool("IsFalling", true );
+            }
         }
 
         if(movementDirection != Vector3.zero ) // hướng của character, nếu mà movementDirection khác 0 thì di chuyển
@@ -111,12 +146,24 @@ public class PlayerMovementTest : MonoBehaviour
             playerAnim.SetBool("IsMoving", false);
         }
 
+        if(!isGrounded)
+        {
+            Vector3 velocity = Inputmagnitude * jumpSpeed * movementDirection;
+            velocity.y = yForce;
+
+            characterController.Move(velocity * Time.deltaTime);
+        }
+
     }
     private void OnAnimatorMove()
     {
-        Vector3 velocity = playerAnim.deltaPosition;
-        velocity.y = yForce * Time.deltaTime;
+        if(isGrounded)
+        {
+            Vector3 velocity = playerAnim.deltaPosition * moveSpeed;
+            velocity.y = yForce * Time.deltaTime;
 
-        characterController.Move(velocity); // Move: sẽ k tự nhân time.deltatime
+            characterController.Move(velocity); // Move: sẽ k tự nhân time.deltatime
+        }
+        
     }
 }
