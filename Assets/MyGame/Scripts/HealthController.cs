@@ -10,9 +10,14 @@ public class HealthController : MonoBehaviour
     [SerializeField]
     private Animator animator;
 
+    [SerializeField]
+    [Range(0,1)]
+    private float maximumInjuredLayerWeight;
+
     private float maxHealth = 100;
     private float currentHealth;
     private int injuredLayerIndex;
+    private float layerWeightVelocity;
 
     // Start is called before the first frame update
     void Start()
@@ -37,7 +42,14 @@ public class HealthController : MonoBehaviour
             }
         }
         float healthPercentage = currentHealth / maxHealth;
-        healthText.text = $"HP: {healthPercentage * 100}%";  
+        healthText.text = $"HP: {healthPercentage * 100}%";
+
+        float currentInjuredLayerWeight = animator.GetLayerWeight(injuredLayerIndex);
+        float targetInjuredLayerWeight = (1 - healthPercentage) * maximumInjuredLayerWeight;
+        animator.SetLayerWeight(injuredLayerIndex, Mathf.SmoothDamp(currentInjuredLayerWeight,targetInjuredLayerWeight,ref layerWeightVelocity, 0.2f));
+
+
+
 
 
     }
