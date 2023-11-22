@@ -12,9 +12,15 @@ public class ZombieTest : MonoBehaviour
     }
     [SerializeField]
     private Camera mainCamera;
+    [SerializeField]
+    private PhysicMaterial zombiePhysicsMaterials;
 
     private Rigidbody[] zombieRBs;
     private CharacterJoint[] zombieJoint;
+    private Collider[] zombieColliders;
+
+   
+   
     private ZombieState currentState = ZombieState.Walking;
     private Animator zombieAnimator;
     private CharacterController zombieCC;
@@ -25,10 +31,12 @@ public class ZombieTest : MonoBehaviour
     {
         zombieRBs = GetComponentsInChildren<Rigidbody>();
         zombieJoint = GetComponentsInChildren<CharacterJoint>();
+        zombieColliders = GetComponentsInChildren<Collider>();
         zombieAnimator = GetComponent<Animator>();
         zombieCC = GetComponent<CharacterController>();
         DisableRagdoll();
         SetUpCHaracterJoint();
+        SetUpCollider();
     }
 
 
@@ -50,6 +58,14 @@ public class ZombieTest : MonoBehaviour
         foreach (var joint in zombieJoint)
         {
             joint.enableProjection = true;
+        }
+    }
+
+    private void SetUpCollider()
+    {
+            foreach (var col in zombieColliders)
+        {
+            col.material = zombiePhysicsMaterials;
         }
     }
 
@@ -84,26 +100,46 @@ public class ZombieTest : MonoBehaviour
         Quaternion toRotation = Quaternion.LookRotation(direction, Vector3.up);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, 20 * Time.deltaTime);
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            EnableRagdoll();
-            currentState = ZombieState.Ragdoll;
-        }
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    EnableRagdoll();
+        //    currentState = ZombieState.Ragdoll;
+        //}
     }
 
     private void RagdollBehavior()
     {
-        
+        this.enabled = false; // khi died hết xoay về phía camera
     }
 
-    public void TriggerRagdoll(Vector3 force, Vector3 hitPoint)
+    public void TriggerRagdoll(Vector3 force, Vector3 hitPoint) 
     {
         EnableRagdoll();
 
-        Rigidbody hitRB = zombieRBs.OrderBy(Rigidbody => Vector3.Distance(Rigidbody.position, hitPoint)).First();
+        //Rigidbody hitRB = zombieRBs.OrderBy(Rigidbody => Vector3.Distance(Rigidbody.position, hitPoint)).First(); // dùng linQ xác định vị trí bị bắn
+        Rigidbody hitRb = FindHitRigidbody(hitPoint);
 
-        hitRB.AddForceAtPosition(force, hitPoint, ForceMode.Impulse); // ForceMode.Impulse: tác động liền lập tức
+        hitRb.AddForceAtPosition(force, hitPoint, ForceMode.Impulse); // ForceMode.Impulse: tác động liền lập tức
+        currentState = ZombieState.Ragdoll;
 
+    }
+
+    private Rigidbody FindHitRigidbody(Vector3 hitPoint) // dùng vòng lặp xác định vị trí bị bắn
+    {
+        Rigidbody closestRigidbody = null;
+        float closestDistance = 0;
+        foreach (var rb in zombieRBs)
+        {
+            float distance = Vector3.Distance(rb.position, hitPoint);
+
+            if (closestRigidbody == null || distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestRigidbody = rb;
+            }
+        }
+
+        return closestRigidbody;
     }
    
 }
