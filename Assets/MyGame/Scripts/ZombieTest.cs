@@ -93,12 +93,12 @@ public class ZombieTest : MonoBehaviour
 
     private void WalkingBehavior()
     {
-        Vector3 direction = mainCamera.transform.position - transform.position;
-        direction.y = 0;
-        direction.Normalize();
+        Vector3 direction = mainCamera.transform.position - transform.position; // điều khiển Zombie đi về hướng camera
+        direction.y = 0; // ngăn chặn zombie di chuyển lên xuống khi đi thì set y = 0
+        direction.Normalize(); // chuẩn hóa vector để tốc độ zombie k thay đổi khi chi chuyển chéo.
 
-        Quaternion toRotation = Quaternion.LookRotation(direction, Vector3.up);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, 20 * Time.deltaTime);
+        Quaternion toRotation = Quaternion.LookRotation(direction, Vector3.up); // tạo 1 góc quay cho character hường lên, theo 1 cái hướng dc set ở trên
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, 20 * Time.deltaTime); // xoay zombie từ góc quay hiện tại đến góc quay ở trên, với tốc độ
 
         //if (Input.GetKeyDown(KeyCode.Space))
         //{
@@ -109,7 +109,7 @@ public class ZombieTest : MonoBehaviour
 
     private void RagdollBehavior()
     {
-        this.enabled = false; // khi died hết xoay về phía camera
+        this.enabled = false; // tắt scripts để khi died hết xoay về phía camera
     }
 
     public void TriggerRagdoll(Vector3 force, Vector3 hitPoint) 
@@ -119,7 +119,7 @@ public class ZombieTest : MonoBehaviour
         //Rigidbody hitRB = zombieRBs.OrderBy(Rigidbody => Vector3.Distance(Rigidbody.position, hitPoint)).First(); // dùng linQ xác định vị trí bị bắn
         Rigidbody hitRb = FindHitRigidbody(hitPoint);
 
-        hitRb.AddForceAtPosition(force, hitPoint, ForceMode.Impulse); // ForceMode.Impulse: tác động liền lập tức
+        hitRb.AddForceAtPosition(force, hitPoint, ForceMode.Impulse); // ForceMode.Impulse: tác động liền lập tức, tạo hiệu ứng nảy
         currentState = ZombieState.Ragdoll;
 
     }
