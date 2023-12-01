@@ -1648,7 +1648,7 @@
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "3019e471b959469688bcadb0a630b18c",
     "m_Id": 0,
-    "m_DisplayName": "HeightWave",
+    "m_DisplayName": "WaveHeight",
     "m_SlotType": 1,
     "m_Hidden": false,
     "m_ShaderOutputName": "Out",
@@ -2303,10 +2303,10 @@
     "m_Guid": {
         "m_GuidSerialized": "f3bbbe7d-e13a-4bc0-980d-551970660f23"
     },
-    "m_Name": "HeightWave",
+    "m_Name": "WaveHeight",
     "m_DefaultRefNameVersion": 1,
-    "m_RefNameGeneratedByDisplayName": "HeightWave",
-    "m_DefaultReferenceName": "_HeightWave",
+    "m_RefNameGeneratedByDisplayName": "WaveHeight",
+    "m_DefaultReferenceName": "_WaveHeight",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
     "m_UseCustomSlotLabel": false,
