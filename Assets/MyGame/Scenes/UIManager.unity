@@ -485,6 +485,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0052a06ef9b904d4fa05b79a244a6b40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cScreen: {fileID: 954943264}
+  cPopup: {fileID: 353579683}
+  cNotify: {fileID: 1329926920}
+  cOverlap: {fileID: 1037844681}
 --- !u!4 &586095721
 Transform:
   m_ObjectHideFlags: 0
