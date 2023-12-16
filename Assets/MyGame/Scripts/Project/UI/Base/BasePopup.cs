@@ -18,9 +18,9 @@ public class BasePopup : BaseUIElement
     {
         base.Hide();
     }
-    public override void OnClickBackButton()
+    public override void OnClickedBackButton()
     {
-        base.OnClickBackButton();
+        base.OnClickedBackButton();
     }
 
 

@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseScreen : BaseUIElement
+public class BaseNotify : BaseUIElement
 {
     public override void Init()
     {
         base.Init();
-        this.uiType = UIType.SCREEN;
+        this.uiType = UIType.NOTIFY;
     }
 
     public override void Show(object data)
@@ -18,15 +18,10 @@ public class BaseScreen : BaseUIElement
     {
         base.Hide();
     }
-    public override void OnClickBackButton()
+    public override void OnClickedBackButton()
     {
-        base.OnClickBackButton();
+        base.OnClickedBackButton();
     }
-
-
-
-
-
 
 
 

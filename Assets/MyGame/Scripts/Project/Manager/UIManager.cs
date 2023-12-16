@@ -1,54 +1,49 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Xml.Serialization;
-using UnityEditor.Callbacks;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class UIManager : BaseManager<UIManager> 
+public class UIManager : BaseManager<UIManager>
 {
     public GameObject cScreen, cPopup, cNotify, cOverlap, gContainer, gWrapper;
     public Canvas MyCanvas;
     public EventSystem MyEventSystem;
 
-    private Dictionary<string, BaseScreen> screens = new Dictionary<string, BaseScreen>();
-    private Dictionary<string, BasePopup> popups = new Dictionary<string, BasePopup>();
-    private Dictionary<string, BaseNotify> notifies = new Dictionary<string, BaseNotify>();
-    private Dictionary<string, BaseOverlap> overlaps = new Dictionary<string, BaseOverlap>();
-
     public Dictionary<string, BaseScreen> Screens => screens;
-    public Dictionary<string, BasePopup > Popups => popups;
-    public Dictionary<string, BaseNotify > Notifies => notifies;
-    public Dictionary<string, BaseOverlap > Overlaps => overlaps;
-
-    private BaseScreen curScreen;
-    private BasePopup curPopup;
-    private BaseNotify curNotify;
-    private BaseOverlap curOverlap;
+    public Dictionary<string, BasePopup> Popups => popups;
+    public Dictionary<string, BaseNotify> Notifies => notifies;
+    public Dictionary<string, BaseOverlap> Overlaps => overlaps;
 
     public BaseScreen CurScreen => curScreen;
     public BasePopup CurPopup => curPopup;
     public BaseNotify CurNotify => curNotify;
     public BaseOverlap CurOverlap => curOverlap;
 
-    private const string SCREEN_RESOURCES_PATH = "Prefabs/UI/Screen/";
-    private const string POPUP_RESOURCES_PATH = "Prefabs/UI/Popup/";
-    private const string NOTIFY_RESOURCES_PATH = "Prefabs/UI/Notify/";
-    private const string OVERLAP_RESOURCES_PATH = "Prefabs/UI/Overlap/";
+    private Dictionary<string, BaseScreen> screens = new Dictionary<string, BaseScreen>();
+    private Dictionary<string, BasePopup> popups = new Dictionary<string, BasePopup>();
+    private Dictionary<string, BaseNotify> notifies = new Dictionary<string, BaseNotify>();
+    private Dictionary<string, BaseOverlap> overlaps = new Dictionary<string, BaseOverlap>();
 
-    private const string NAME_SCREEN_CONTAINER = "CONTAINER_SCREEN";
-    private const string NAME_POPUP_CONTRAINER = "CONTAINER_POPUP";
-    private const string NAME_OVERLAP_CONTAINER = "CONTAINER_OVERLAP";
-    private const string NAME_NOTIFY_CONTAINER = "CONTAINER_NOTIFY";
-    private const string NAME_UI_CONTAINER = "UI_CONTAINER";
-    private const string NAME_UI_WRAPPER = "UI_WRAPPER";
-    
-
+    private BaseScreen curScreen;
+    private BasePopup curPopup;
+    private BaseNotify curNotify;
+    private BaseOverlap curOverlap;
 
     private List<string> rmScreens = new List<string>();
     private List<string> rmPopups = new List<string>();
     private List<string> rmNotifies = new List<string>();
     private List<string> rmOverlaps = new List<string>();
+
+    private const string SCREEN_RESOURCES_PATH = "Prefabs/UI/Screen/";
+    private const string POPUP_RESOURCES_PATH = "Prefabs/UI/Popup/";
+    private const string NOTIFY_RESOURCES_PATH = "Prefabs/UI/Notify/";
+    private const string OVERLAP_RESOURCES_PATH = "Prefabs/UI/Overlap/";
+    private const string NAME_SCREEN_CONTAINER = "CONTAINER_SCREEN";
+    private const string NAME_POPUP_CONTAINER = "CONTAINER_POPUP";
+    private const string NAME_OVERLAP_CONTAINER = "CONTAINER_OVERLAP";
+    private const string NAME_NOTIFY_CONTAINER = "CONTAINER_NOTIFY";
+    private const string NAME_UI_CONTAINER = "UI_CONTAINER";
+    private const string NAME_UI_WRAPPER = "UI_WRAPPER";
 
     protected override void Awake()
     {
@@ -56,9 +51,9 @@ public class UIManager : BaseManager<UIManager>
 
 #if UNITY_EDITOR
         this.cScreen.name = NAME_SCREEN_CONTAINER;
-        this.cPopup.name = NAME_POPUP_CONTRAINER;
-        this.cNotify.name = NAME_NOTIFY_CONTAINER;
+        this.cPopup.name = NAME_POPUP_CONTAINER;
         this.cOverlap.name = NAME_OVERLAP_CONTAINER;
+        this.cNotify.name = NAME_NOTIFY_CONTAINER;
         this.gContainer.name = NAME_UI_CONTAINER;
         this.gWrapper.name = NAME_UI_WRAPPER;
 #endif
@@ -68,7 +63,7 @@ public class UIManager : BaseManager<UIManager>
     {
         HideAllScreens();
         HideAllPopups();
-        HideAllNotifies();
+        HideAllNotify();
         HideAllOverlaps();
     }
 
@@ -78,7 +73,7 @@ public class UIManager : BaseManager<UIManager>
     {
         string nameScreen = typeof(T).Name;
         GameObject pfScreen = GetUIPrefab(UIType.SCREEN, nameScreen);
-        if ( pfScreen == null || !pfScreen.GetComponent<BaseScreen>() )
+        if (pfScreen == null || !pfScreen.GetComponent<BaseScreen>())
         {
             throw new MissingReferenceException("Can not found" + nameScreen + "screen. !!!");
         }
@@ -110,7 +105,7 @@ public class UIManager : BaseManager<UIManager>
         }
     }
 
-    public T GetExitstScreen<T>() where T : BaseScreen
+    public T GetExistScreen<T>() where T : BaseScreen
     {
         string screenName = typeof(T).Name;
         if (screens.ContainsKey(screenName))
@@ -122,7 +117,7 @@ public class UIManager : BaseManager<UIManager>
 
     private void RemoveScreen(string v)
     {
-        for (int i = 0; i< rmScreens.Count; i++)
+        for (int i = 0; i < rmScreens.Count; i++)
         {
             if (rmScreens[i].Equals(v))
             {
@@ -141,12 +136,12 @@ public class UIManager : BaseManager<UIManager>
 
     public void ShowScreen<T>(object data = null, bool forceShowData = false) where T : BaseScreen
     {
-        string screenName = typeof (T).Name;
+        string screenName = typeof(T).Name;
         BaseScreen result = null;
 
         if (curScreen != null)
         {
-            var curName = curScreen.GetType().Name; 
+            var curName = curScreen.GetType().Name;
             if (curName.Equals(screenName))
             {
                 result = curScreen;
@@ -156,16 +151,18 @@ public class UIManager : BaseManager<UIManager>
                 RemoveScreen(curName);
             }
         }
+
         if (result == null)
         {
             if (!screens.ContainsKey(screenName))
             {
-                BaseScreen screemScr = GetNewScreen<T>();
-                if (screemScr != null)
+                BaseScreen screenScr = GetNewScreen<T>();
+                if (screenScr != null)
                 {
-                    screens.Add(screenName, screemScr);
+                    screens.Add(screenName, screenScr);
                 }
             }
+
             if (screens.ContainsKey(screenName))
             {
                 result = screens[screenName];
@@ -187,6 +184,7 @@ public class UIManager : BaseManager<UIManager>
                 }
             }
         }
+
         if (isShow)
         {
             curScreen = result;
@@ -198,6 +196,7 @@ public class UIManager : BaseManager<UIManager>
     #endregion
 
     #region Popup
+
     private BasePopup GetNewPopup<T>() where T : BasePopup
     {
         string namePopup = typeof(T).Name;
@@ -210,15 +209,13 @@ public class UIManager : BaseManager<UIManager>
         GameObject ob = Instantiate(pfPopup) as GameObject;
         ob.transform.SetParent(this.cPopup.transform);
         ob.transform.localScale = Vector3.one;
-        ob.transform.localPosition = Vector3.zero; // ở giữa màn hình
-
+        ob.transform.localPosition = Vector3.zero;
 #if UNITY_EDITOR
         ob.name = "POPUP_" + namePopup;
 #endif
         BasePopup popupScr = ob.GetComponent<BasePopup>();
         popupScr.Init();
         return popupScr;
-
     }
 
     public void HidePopup<T>(bool force = false) where T : BasePopup
@@ -232,6 +229,7 @@ public class UIManager : BaseManager<UIManager>
             }
         }
     }
+
     public void HideAllPopups()
     {
         BasePopup scr = null;
@@ -259,11 +257,11 @@ public class UIManager : BaseManager<UIManager>
 
     private void RemovePopup(string v)
     {
-        for (int i = 0; i< rmPopups.Count; i++)
+        for (int i = 0; i < rmPopups.Count; i++)
         {
             if (rmPopups[i].Equals(v))
             {
-                if(popups.ContainsKey(v))
+                if (popups.ContainsKey(v))
                 {
                     Destroy(popups[v].gameObject);
                     popups.Remove(v);
@@ -272,15 +270,16 @@ public class UIManager : BaseManager<UIManager>
             }
         }
     }
+
     public void ShowPopup<T>(object data = null, bool forceShow = false) where T : BasePopup
     {
-        string namePopup = typeof (T).Name;
+        string namePopup = typeof(T).Name;
         BasePopup result = null;
 
         if (curPopup != null)
         {
             var curName = curPopup.GetType().Name;
-            if(curName.Equals(namePopup))
+            if (curName.Equals(namePopup))
             {
                 result = curPopup;
             }
@@ -289,6 +288,7 @@ public class UIManager : BaseManager<UIManager>
                 RemovePopup(curName);
             }
         }
+
         if (result == null)
         {
             if (!popups.ContainsKey(namePopup))
@@ -320,6 +320,7 @@ public class UIManager : BaseManager<UIManager>
                 }
             }
         }
+
         if (isShow)
         {
             curPopup = result;
@@ -329,14 +330,11 @@ public class UIManager : BaseManager<UIManager>
         }
     }
 
-
-
-
     #endregion
 
     #region Notify
 
-    private BaseNotify GetNewNotify<T>() where T: BaseNotify
+    private BaseNotify GetNewNotify<T>() where T : BaseNotify
     {
         string nameNotify = typeof(T).Name;
         GameObject pfNotify = GetUIPrefab(UIType.NOTIFY, nameNotify);
@@ -350,16 +348,17 @@ public class UIManager : BaseManager<UIManager>
         ob.transform.localScale = Vector3.one;
         ob.transform.localPosition = Vector3.zero;
 #if UNITY_EDITOR
-        ob.name = "NOTYFY_" + nameNotify;
+        ob.name = "NOTIFY_" + nameNotify;
 #endif
         BaseNotify notifyScr = ob.GetComponent<BaseNotify>();
         notifyScr.Init();
         return notifyScr;
-        }
+    }
+
     public void HideNotify<T>(bool force = false) where T : BaseNotify
     {
         string notifyName = typeof(T).Name;
-        if(notifies.ContainsKey(notifyName))
+        if (notifies.ContainsKey(notifyName))
         {
             if (force || !notifies[notifyName].IsHide)
             {
@@ -367,7 +366,8 @@ public class UIManager : BaseManager<UIManager>
             }
         }
     }
-    public void HideAllNotifies()
+
+    public void HideAllNotify()
     {
         BaseNotify notifyScr = null;
         foreach (KeyValuePair<string, BaseNotify> item in notifies)
@@ -376,12 +376,12 @@ public class UIManager : BaseManager<UIManager>
             if (notifyScr == null || notifyScr.IsHide)
                 continue;
             notifyScr.Hide();
-
             if (notifies.Count <= 0)
                 break;
         }
     }
-    public T GetExitstNotify<T>() where T : BaseNotify
+
+    public T GetExistNotify<T>() where T : BaseNotify
     {
         string notifyName = typeof(T).Name;
         if (notifies.ContainsKey(notifyName))
@@ -390,9 +390,10 @@ public class UIManager : BaseManager<UIManager>
         }
         return null;
     }
+
     private void RemoveNotify(string v)
     {
-        for (int i = 0; i< rmNotifies.Count; i++)
+        for (int i = 0; i < rmNotifies.Count; i++)
         {
             if (rmNotifies[i].Equals(v))
             {
@@ -405,6 +406,7 @@ public class UIManager : BaseManager<UIManager>
             }
         }
     }
+
     public void ShowNotify<T>(object data = null, bool forceShow = false) where T : BaseNotify
     {
         string nameNotify = typeof(T).Name;
@@ -422,6 +424,7 @@ public class UIManager : BaseManager<UIManager>
                 RemoveNotify(curName);
             }
         }
+
         if (result == null)
         {
             if (!notifies.ContainsKey(nameNotify))
@@ -439,7 +442,7 @@ public class UIManager : BaseManager<UIManager>
         }
 
         bool isShow = false;
-        if(result != null)
+        if (result != null)
         {
             if (forceShow)
             {
@@ -453,6 +456,7 @@ public class UIManager : BaseManager<UIManager>
                 }
             }
         }
+
         if (isShow)
         {
             curNotify = result;
@@ -569,6 +573,7 @@ public class UIManager : BaseManager<UIManager>
                 result = overlaps[overlapName];
             }
         }
+
         if (result != null && (result.IsHide || force))
         {
             curOverlap = result;
@@ -576,7 +581,6 @@ public class UIManager : BaseManager<UIManager>
             result.Show(data);
         }
     }
-
     #endregion
 
     private GameObject GetUIPrefab(UIType type, string uiName)
@@ -608,8 +612,10 @@ public class UIManager : BaseManager<UIManager>
                     }
                     break;
             }
+
             result = Resources.Load(defaultPath) as GameObject;
         }
         return result;
     }
+
 }

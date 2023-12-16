@@ -2,26 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseOverlap : BaseUIElement
+public class ScreenHome : BaseScreen
 {
     public override void Init()
     {
         base.Init();
-        this.uiType = UIType.OVERLAP;
     }
 
     public override void Show(object data)
     {
         base.Show(data);
     }
+
     public override void Hide()
     {
         base.Hide();
     }
-    public override void OnClickBackButton()
+
+    public void OnClickSettingButton()
     {
-        base.OnClickBackButton();
+        if (UIManager.HasInstance)
+        {
+            UIManager.Instance.ShowPopup<PopupSetting>();
+        }
     }
 
-
+    public void OnClickStartButton()
+    {
+        Hide();
+    }
 }

@@ -2,30 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PopupSetting : BasePopup
+public class BaseOverlap : BaseUIElement
 {
     public override void Init()
     {
         base.Init();
+        this.uiType = UIType.OVERLAP;
     }
+
     public override void Show(object data)
     {
         base.Show(data);
     }
-
     public override void Hide()
     {
-        base.Hide(); 
+        base.Hide();
     }
-
-    public void OnClickApplyButton()
+    public override void OnClickedBackButton()
     {
-        Hide();
-    }
-
-    public void OnCanvasGroupChanged()
-    {
-        Hide();
+        base.OnClickedBackButton();
     }
 
 
