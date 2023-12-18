@@ -476,11 +476,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 308851083172362252, guid: 16c1fe7f7c56ed34aa6d78010a342669, type: 3}
       propertyPath: m_ReferenceResolution.x
-      value: 1440
+      value: 1920
       objectReference: {fileID: 0}
     - target: {fileID: 308851083172362252, guid: 16c1fe7f7c56ed34aa6d78010a342669, type: 3}
       propertyPath: m_ReferenceResolution.y
-      value: 900
+      value: 1080
       objectReference: {fileID: 0}
     - target: {fileID: 4267563795853174956, guid: 16c1fe7f7c56ed34aa6d78010a342669, type: 3}
       propertyPath: m_Name
