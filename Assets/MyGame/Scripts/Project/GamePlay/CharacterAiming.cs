@@ -37,6 +37,12 @@ public class CharacterAiming : MonoBehaviour
             raycastWeapon.StartFiring();
         }
 
+        if (raycastWeapon.isFiring) // hàm này khi giữ chuột thì nó bắn liên tục
+        {
+            raycastWeapon.UpdateFiring(Time.deltaTime);
+        }
+        raycastWeapon.UpdateBullets(Time.deltaTime);
+
         if (Input.GetButtonUp("Fire1"))
         {
             raycastWeapon.StopFiring();
