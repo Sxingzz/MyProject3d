@@ -12,6 +12,7 @@ public class RaycastWeapon : MonoBehaviour
         public TrailRenderer tracer;
     }
 
+    public string weaponName;
     public Transform raycastOrigin;
     public Transform raycastDestination; // đích đến của cái tia
     public ParticleSystem[] muzzleFlash;

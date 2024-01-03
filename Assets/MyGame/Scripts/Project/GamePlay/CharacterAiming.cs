@@ -1,15 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Animations.Rigging;
+
 
 public class CharacterAiming : MonoBehaviour
 {
-    public Rig aimLayer;
+   
     public float turnSpeed = 15f;
     public float aimDuration = 0.3f;
     private Camera mainCamera;
-    private RaycastWeapon raycastWeapon;
+   
 
     // Start is called before the first frame update
     void Start()
@@ -18,36 +18,9 @@ public class CharacterAiming : MonoBehaviour
         Cursor.visible = false; // ẩn chuột
         Cursor.lockState = CursorLockMode.Locked; // khóa lại
 
-        raycastWeapon = GetComponentInChildren<RaycastWeapon>();
+        
     }
 
-    private void Update()
-    {
-        if(Input.GetMouseButton(1))
-        {
-            aimLayer.weight += Time.deltaTime / aimDuration;
-        }
-        else
-        {
-            aimLayer.weight -= Time.deltaTime / aimDuration;
-        }
-
-        if (Input.GetButtonDown("Fire1"))
-        {
-            raycastWeapon.StartFiring();
-        }
-
-        if (raycastWeapon.isFiring) // hàm này khi giữ chuột thì nó bắn liên tục
-        {
-            raycastWeapon.UpdateFiring(Time.deltaTime);
-        }
-        raycastWeapon.UpdateBullets(Time.deltaTime);
-
-        if (Input.GetButtonUp("Fire1"))
-        {
-            raycastWeapon.StopFiring();
-        }
-    }
 
     // Update is called once per frame
     void FixedUpdate()
