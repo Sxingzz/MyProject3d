@@ -5,11 +5,17 @@ using UnityEngine;
 
 public class ActiveWeapon : MonoBehaviour
 {
-    public Transform weaponParent;
+    public enum WeaponSlot
+    {
+        Primary = 0,
+        Secondary = 1,
+    }
+    public Transform[] weaponSlots;
     public Transform crossHairTarget;
     public Animator rigController;
     
-    private RaycastWeapon weapon;
+    private RaycastWeapon[] equippedWeapons = new RaycastWeapon[2];
+    private int activeWeaponIndex;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +30,8 @@ public class ActiveWeapon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        var weapon = GetWeapon(activeWeaponIndex);
+
         if (weapon != null)
         {
             if (Input.GetButtonDown("Fire1"))
@@ -41,11 +49,29 @@ public class ActiveWeapon : MonoBehaviour
             {
                 weapon.StopFiring();
             }
+
+            if(Input.GetKeyDown(KeyCode.X))
+            {
+                bool isHostered = rigController.GetBool("hoister_weapon"); // set bien ishostered = true để play animation rút súng
+                rigController.SetBool("hoister_weapon", !isHostered); // !isHostered set = false để đưa súng về túi
+            }
         }
        
     }
+
+    private RaycastWeapon GetWeapon(int index)
+    {
+        if(index<0 || index > equippedWeapons.Length)
+        {
+            return null;
+        }
+        return equippedWeapons[index];
+    }
+
     public void Equip(RaycastWeapon newWeapon)
     {
+        int weaponSlotIndex = (int)newWeapon.weaponSlot;
+        var weapon = GetWeapon(weaponSlotIndex);
         if (weapon)
         {
             Destroy(weapon.gameObject); // phải chấm Gameobject nếu k chỉ destroy cái scripts
@@ -53,8 +79,10 @@ public class ActiveWeapon : MonoBehaviour
 
         weapon = newWeapon;
         weapon.raycastDestination = crossHairTarget;
-        weapon.transform.SetParent(weaponParent, false);
+        weapon.transform.SetParent(weaponSlots[weaponSlotIndex], false);
         rigController.Play("equip_" + weapon.weaponName);
-        
+
+        equippedWeapons[weaponSlotIndex] = weapon;
+        activeWeaponIndex = weaponSlotIndex;
     }
 }
