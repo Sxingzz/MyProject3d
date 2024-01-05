@@ -72,10 +72,7 @@ public class ActiveWeapon : MonoBehaviour
     {
         int weaponSlotIndex = (int)newWeapon.weaponSlot;
         var weapon = GetWeapon(weaponSlotIndex);
-        if (weapon)
-        {
-            Destroy(weapon.gameObject); // phải chấm Gameobject nếu k chỉ destroy cái scripts
-        }
+       
 
         weapon = newWeapon;
         weapon.raycastDestination = crossHairTarget;
