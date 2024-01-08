@@ -16,6 +16,7 @@ public class ActiveWeapon : MonoBehaviour
     
     private RaycastWeapon[] equippedWeapons = new RaycastWeapon[2];
     private int activeWeaponIndex;
+    private bool isHolsterd = false;
 
     // Start is called before the first frame update
     void Start()
@@ -32,7 +33,7 @@ public class ActiveWeapon : MonoBehaviour
     {
         var weapon = GetWeapon(activeWeaponIndex);
 
-        if (weapon != null)
+        if (weapon != null && !isHolsterd)
         {
             if (Input.GetButtonDown("Fire1"))
             {
@@ -49,14 +50,22 @@ public class ActiveWeapon : MonoBehaviour
             {
                 weapon.StopFiring();
             }
-
-            if(Input.GetKeyDown(KeyCode.X))
-            {
-                bool isHostered = rigController.GetBool("hoister_weapon"); // set bien ishostered = true để play animation rút súng
-                rigController.SetBool("hoister_weapon", !isHostered); // !isHostered set = false để đưa súng về túi
-            }
         }
-       
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            //bool isHostered = rigController.GetBool("hoister_weapon"); // set bien ishostered = true để play animation rút súng
+            //rigController.SetBool("hoister_weapon", !isHostered); // !isHostered set = false để đưa súng về túi
+            ToggleActiveWeapon();
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            SetActiveWeapon(WeaponSlot.Primary);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            SetActiveWeapon(WeaponSlot.Secondary);
+        }
+
     }
 
     private RaycastWeapon GetWeapon(int index)
@@ -81,5 +90,71 @@ public class ActiveWeapon : MonoBehaviour
 
         equippedWeapons[weaponSlotIndex] = weapon;
         activeWeaponIndex = weaponSlotIndex;
+
+        SetActiveWeapon(newWeapon.weaponSlot);
+
+    }
+
+    private void ToggleActiveWeapon()
+    {
+        bool isHoslsterd = rigController.GetBool("holster_weapon");
+        if(isHoslsterd)
+        {
+            StartCoroutine(ActivateWeapon(activeWeaponIndex));
+        }
+        else
+        {
+            StartCoroutine(HolsterWeapon(activeWeaponIndex));
+        }
+    }
+
+    private void SetActiveWeapon(WeaponSlot weaponSlot)
+    {
+        int holsterIndex = activeWeaponIndex;
+        int activateIndex = (int) weaponSlot;
+
+        if(holsterIndex == activateIndex)
+        {
+            holsterIndex = -1;
+        }
+
+        StartCoroutine(SwitchWeapon(holsterIndex, activateIndex));
+    }
+
+    private IEnumerator SwitchWeapon(int holsterIndex, int activateIndex)
+    {
+        yield return StartCoroutine(HolsterWeapon(holsterIndex));
+        yield return StartCoroutine(ActivateWeapon(activateIndex));
+        activeWeaponIndex = activateIndex;
+    }
+    private IEnumerator HolsterWeapon(int index)
+    {
+        isHolsterd = true;
+        var weapon = GetWeapon(index);
+        if(weapon != null)
+        {
+            rigController.SetBool("holster_weapon", true);
+            yield return new WaitForSeconds(0.1f);
+            do
+            {
+                yield return new WaitForEndOfFrame();
+            } while (rigController.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f);
+        }
+    }
+
+    private IEnumerator ActivateWeapon(int index)
+    {
+        var weapon = GetWeapon(index);
+        if(weapon != null)
+        {
+            rigController.SetBool("holster_weapon", false);
+            rigController.Play("equip_" + weapon.weaponName);
+            yield return new WaitForSeconds(0.1f);
+            do
+            {
+                yield return new WaitForEndOfFrame();
+            } while (rigController.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f);
+            isHolsterd = false;
+        }
     }
 }

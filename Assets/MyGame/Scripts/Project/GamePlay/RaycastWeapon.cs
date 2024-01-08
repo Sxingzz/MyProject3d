@@ -10,6 +10,7 @@ public class RaycastWeapon : MonoBehaviour
         public Vector3 initialPosition;
         public Vector3 initialVelocity;
         public TrailRenderer tracer;
+        
     }
 
     public ActiveWeapon.WeaponSlot weaponSlot;
@@ -27,6 +28,7 @@ public class RaycastWeapon : MonoBehaviour
 
     public float bulletSpeed = 1000f;
     public float bulletDrop = 0f;
+   
 
 
     private Ray ray;
@@ -107,6 +109,12 @@ public class RaycastWeapon : MonoBehaviour
 
             bullet.tracer.transform.position = hitInfo.point;
             bullet.time = maxLineTime;
+
+            var rigidbody = hitInfo.collider.GetComponent<Rigidbody>();
+            if (rigidbody)
+            {
+                rigidbody.AddForceAtPosition(ray.direction * 5, hitInfo.point, ForceMode.Impulse);
+            }
         }
         else
         {
