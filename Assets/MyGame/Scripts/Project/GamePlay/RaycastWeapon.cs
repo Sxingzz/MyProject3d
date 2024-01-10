@@ -4,16 +4,8 @@ using UnityEngine;
 
 public class RaycastWeapon : MonoBehaviour
 {
-    class Bullet
-    {
-        public float time;
-        public Vector3 initialPosition;
-        public Vector3 initialVelocity;
-        public TrailRenderer tracer;
-        
-    }
 
-    public ActiveWeapon.WeaponSlot weaponSlot;
+    public WeaponSlot weaponSlot;
     public string weaponName;
     public Transform raycastOrigin;
     public Transform raycastDestination; // đích đến của cái tia
@@ -35,26 +27,21 @@ public class RaycastWeapon : MonoBehaviour
     private RaycastHit hitInfo;
 
     private float accumulatedTime;
-
-    private List<Bullet> bullets = new List<Bullet>();
+    
     private float maxLineTime = 3f;
+
+    public WeaponRecoil weaponRecoil;
+
+    private void Awake()
+    {
+        weaponRecoil = GetComponent<WeaponRecoil>();
+    }
 
     private Vector3 GetPosition(Bullet bullet)
     {
         // p +  v*t + 0.5*g*t*t
         Vector3 gravity = Vector3.down * bulletDrop;
         return (bullet.initialPosition) + (bullet.initialVelocity * bullet.time) + (0.5f * bullet.time * bullet.time * gravity);
-    }
-
-    private Bullet CreateBullet(Vector3 position, Vector3 velocity)
-    {
-        Bullet bullet = new Bullet();
-        bullet.initialPosition = position;
-        bullet.initialVelocity = velocity;
-        bullet.time = 0f;
-        bullet.tracer = Instantiate(tracerEffect, position, Quaternion.identity);
-        bullet.tracer.AddPosition(position);
-        return bullet;
     }
 
     public void StartFiring()
@@ -82,18 +69,30 @@ public class RaycastWeapon : MonoBehaviour
     }
     private void SimulateBullets(float deltaTime)
     {
-        bullets.ForEach(bullet =>
+        if (ObjectPool.HasInstance)
         {
-            Vector3 p0 = GetPosition(bullet);
-            bullet.time += deltaTime;
-            Vector3 p1 = GetPosition(bullet);
-            RaycastSegment(p0, p1, bullet);
-        });
+            ObjectPool.Instance.pooledObjects.ForEach(bullet =>
+            {
+                Vector3 p0 = GetPosition(bullet);
+                bullet.time += deltaTime;
+                Vector3 p1 = GetPosition(bullet);
+                RaycastSegment(p0, p1, bullet);
+            });
+        }
     }
 
     private void DestroyBullets()
     {
-        bullets.RemoveAll(bullet => bullet.time >= maxLineTime);
+        if (ObjectPool.HasInstance)
+        {
+            foreach (Bullet bullet in ObjectPool.Instance.pooledObjects)
+            {
+                if (bullet.time >= maxLineTime)
+                {
+                    bullet.Deactive();
+                }
+            }
+        }
     }
     private void RaycastSegment(Vector3 start, Vector3 end, Bullet bullet)
     {
@@ -109,6 +108,7 @@ public class RaycastWeapon : MonoBehaviour
 
             bullet.tracer.transform.position = hitInfo.point;
             bullet.time = maxLineTime;
+            end = hitInfo.point;
 
             var rigidbody = hitInfo.collider.GetComponent<Rigidbody>();
             if (rigidbody)
@@ -116,10 +116,7 @@ public class RaycastWeapon : MonoBehaviour
                 rigidbody.AddForceAtPosition(ray.direction * 5, hitInfo.point, ForceMode.Impulse);
             }
         }
-        else
-        {
-            bullet.tracer.transform.position = end;
-        }
+        bullet.tracer.transform.position = end;
     }
 
     private void FireBullet()
@@ -127,8 +124,13 @@ public class RaycastWeapon : MonoBehaviour
         PlayEffect();
 
         Vector3 velocity = (raycastDestination.position - raycastOrigin.position).normalized * bulletSpeed;
-        var bullet = CreateBullet(raycastOrigin.position, velocity);
-        bullets.Add(bullet);
+        if (ObjectPool.HasInstance)
+        {
+            var bullet = ObjectPool.Instance.GetPooledObject();
+            bullet.Ative(raycastOrigin.position, velocity);
+        }
+
+        weaponRecoil.GenerateRecoil();
 
         //ray.origin = raycastOrigin.position;
         //ray.direction = raycastDestination.position - raycastOrigin.position;

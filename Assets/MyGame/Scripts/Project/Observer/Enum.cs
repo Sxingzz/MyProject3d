@@ -17,3 +17,9 @@ public enum UIType
     OVERLAP,
 
 }
+
+public enum WeaponSlot
+{
+    Primary = 0,
+    Secondary = 1,
+}
