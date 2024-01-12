@@ -49,6 +49,7 @@ public class RaycastWeapon : MonoBehaviour
         isFiring = true;
         accumulatedTime = 0f;
         FireBullet();
+        weaponRecoil.Reset();
 
     }
 
@@ -130,7 +131,7 @@ public class RaycastWeapon : MonoBehaviour
             bullet.Ative(raycastOrigin.position, velocity);
         }
 
-        weaponRecoil.GenerateRecoil();
+        weaponRecoil.GenerateRecoil(weaponName);
 
         //ray.origin = raycastOrigin.position;
         //ray.direction = raycastDestination.position - raycastOrigin.position;

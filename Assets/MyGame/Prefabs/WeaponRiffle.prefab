@@ -9951,7 +9951,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCamera: {fileID: 0}
-  verticalRecoil: 1
+  cameraShake: {fileID: 0}
+  recoilPattern:
+  - {x: 10, y: 10}
+  - {x: 8, y: 10}
+  - {x: 6, y: 10}
+  - {x: 4, y: 10}
+  - {x: 2, y: 10}
+  - {x: 0, y: 10}
+  - {x: -2, y: 10}
+  - {x: -4, y: 10}
+  - {x: -6, y: 10}
+  - {x: -8, y: 10}
+  - {x: -10, y: 10}
+  - {x: -7, y: 10}
+  - {x: -5, y: 10}
+  - {x: -3, y: 10}
+  - {x: -1, y: 10}
+  - {x: 0, y: 10}
+  verticalRecoil: 10
+  horizontalRecoil: 10
   duration: 0.1
 --- !u!114 &-8599192034503914619
 MonoBehaviour:
@@ -9975,9 +9994,9 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     m_ImpulseDuration: 0.2
-    m_ImpulseType: 0
+    m_ImpulseType: 3
     m_DissipationRate: 0.25
-    m_RawSignal: {fileID: 0}
+    m_RawSignal: {fileID: 11400000, guid: 554137e88608f7648b850d7622a013b9, type: 2}
     m_AmplitudeGain: 1
     m_FrequencyGain: 1
     m_RepeatMode: 0

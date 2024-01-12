@@ -83,6 +83,7 @@ public class ActiveWeapon : MonoBehaviour
         weapon = newWeapon;
         weapon.raycastDestination = crossHairTarget;
         weapon.weaponRecoil.playerCamera = playerCamera;
+        weapon.weaponRecoil.rigController = rigController;
         weapon.transform.SetParent(weaponSlots[weaponSlotIndex], false);
         rigController.Play("equip_" + weapon.weaponName);
 
