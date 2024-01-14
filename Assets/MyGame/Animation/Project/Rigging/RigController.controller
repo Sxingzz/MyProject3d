@@ -34,7 +34,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: RecoilLayer
+  m_Name: Recoil Layer
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 2482463223313257856}
@@ -190,7 +190,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Weapon_Recoil_Pistol
+  m_Name: weapon_recoil_pistol
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
@@ -239,7 +239,7 @@ AnimatorController:
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
   - serializedVersion: 5
-    m_Name: RecoilLayer
+    m_Name: Recoil Layer
     m_StateMachine: {fileID: -4844225957642987098}
     m_Mask: {fileID: 0}
     m_Motions: []
@@ -310,7 +310,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Weapon_Recoil_Riffle
+  m_Name: weapon_recoil_rifle
   m_Speed: 6
   m_CycleOffset: 0
   m_Transitions:

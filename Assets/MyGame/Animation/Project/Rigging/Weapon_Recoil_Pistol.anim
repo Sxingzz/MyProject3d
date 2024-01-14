@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Weapon_Recoil_Pistol
+  m_Name: weapon_recoil_pistol
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
