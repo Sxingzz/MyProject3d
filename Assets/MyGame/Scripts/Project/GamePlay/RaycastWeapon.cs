@@ -32,6 +32,8 @@ public class RaycastWeapon : MonoBehaviour
 
     public WeaponRecoil weaponRecoil;
 
+    public GameObject magazine;
+
     private void Awake()
     {
         weaponRecoil = GetComponent<WeaponRecoil>();
