@@ -139,6 +139,7 @@ public class RaycastWeapon : MonoBehaviour
             {
                 rigidbody.AddForceAtPosition(ray.direction * 5, hitInfo.point, ForceMode.Impulse);
             }
+            // var enemyHealth = hitInfo.collider.getcomponent<healthcontroller>();
         }
         bullet.tracer.transform.position = end;
     }

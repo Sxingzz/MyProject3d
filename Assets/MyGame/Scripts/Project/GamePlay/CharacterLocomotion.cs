@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class CharacterLocomotion : MonoBehaviour
 {
+    public Animator rigController;
     public float jumpHeight;
     public float gravity;
     public float stepDown;
@@ -19,6 +20,8 @@ public class CharacterLocomotion : MonoBehaviour
     private Vector3 rootMotion;
     private Vector3 velocity;
     private bool isJumping;
+
+    private int isSprintingParam = Animator.StringToHash("IsSprinting");
 
     // Start is called before the first frame update
     void Start()
@@ -43,7 +46,18 @@ public class CharacterLocomotion : MonoBehaviour
         {
             Jump();
         }
+
+        UpdateIsSprinting();
     }
+
+    private void UpdateIsSprinting()
+    {
+        bool isSprinting = Input.GetKey(KeyCode.LeftShift);
+        Debug.Log("isSprintingParam: " +  isSprintingParam);
+        animator.SetBool(isSprintingParam, isSprinting);
+        rigController.SetBool(isSprintingParam, isSprinting);
+    }
+
     private void UpdateAnimation()
     {
         animator.SetFloat("InputX", userInput.x);
