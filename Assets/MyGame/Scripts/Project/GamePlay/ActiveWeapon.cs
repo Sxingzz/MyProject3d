@@ -68,7 +68,7 @@ public class ActiveWeapon : MonoBehaviour
 
     }
 
-    public RaycastWeapon GetAciveWeapon()
+    public RaycastWeapon GetActiveWeapon()
     {
         return GetWeapon(activeWeaponIndex);
     }
