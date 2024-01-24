@@ -16,6 +16,8 @@ public class CharacterLocomotion : MonoBehaviour
     private Animator animator;
     private Vector2 userInput;
     private CharacterController playerController;
+    private ActiveWeapon activeWeapon;
+    private ReloadWeapon reloadWeapon;
 
     private Vector3 rootMotion;
     private Vector3 velocity;
@@ -28,6 +30,8 @@ public class CharacterLocomotion : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         playerController = GetComponent<CharacterController>();
+        activeWeapon = GetComponent<ActiveWeapon>();
+        reloadWeapon = GetComponent<ReloadWeapon>();
     }
 
     // Update is called once per frame
@@ -48,6 +52,16 @@ public class CharacterLocomotion : MonoBehaviour
         }
 
         UpdateIsSprinting();
+    }
+
+
+    private bool IsSprintting()
+    {
+        bool isSprinting = Input.GetKey(KeyCode.LeftShift);
+        bool isFiring = activeWeapon.IsFiring();
+        bool isReloading = reloadWeapon.isReloading;
+        bool isChangingWeapon = activeWeapon.isChangingWeapon;
+        return isSprinting && !isFiring && !isReloading && !isChangingWeapon;
     }
 
     private void UpdateIsSprinting()

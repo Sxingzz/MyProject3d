@@ -3,20 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using UnityEngine.Rendering;
+using UnityEngine.EventSystems;
 
 public class ActiveWeapon : MonoBehaviour
 {
-    public CinemachineFreeLook playerCamera;
+    public CharacterAiming characterAiming;
     public Transform[] weaponSlots;
     public Transform crossHairTarget;
     public Animator rigController;
     public ReloadWeapon reloadWeapon;
-    
+    public bool isChangingWeapon;
+    public bool canFire;
+
     private RaycastWeapon[] equippedWeapons = new RaycastWeapon[2];
     private int activeWeaponIndex;
     private bool isHolsterd = false;
-    public bool canFire;
+    
     // Start is called before the first frame update
+
     void Start()
     {
         reloadWeapon = GetComponent<ReloadWeapon>();
@@ -33,14 +37,16 @@ public class ActiveWeapon : MonoBehaviour
         var weapon = GetWeapon(activeWeaponIndex);
 
         canFire = !isHolsterd && !reloadWeapon.isReloading;
+        bool notSprinting = rigController.GetCurrentAnimatorStateInfo(2).shortNameHash == Animator.StringToHash("notSprinting");
+
         if (weapon != null)
         {
-            if (Input.GetButtonDown("Fire1") && canFire && !weapon.isFiring)
+            if (Input.GetButtonDown("Fire1") && canFire && !weapon.isFiring )
             {
                 weapon.StartFiring();
             }
 
-            if (weapon.isFiring) // hàm này khi giữ chuột thì nó bắn liên tục
+            if (weapon.isFiring && notSprinting) // hàm này khi giữ chuột thì nó bắn liên tục
             {
                 weapon.UpdateFiring(Time.deltaTime);
             }
@@ -68,6 +74,16 @@ public class ActiveWeapon : MonoBehaviour
 
     }
 
+    public bool IsFiring()
+    {
+        RaycastWeapon currentWeapon = GetActiveWeapon();
+        if (!currentWeapon)
+        {
+            return false;
+        }
+        return currentWeapon.isFiring;
+    }
+
     public RaycastWeapon GetActiveWeapon()
     {
         return GetWeapon(activeWeaponIndex);
@@ -90,7 +106,7 @@ public class ActiveWeapon : MonoBehaviour
 
         weapon = newWeapon;
         weapon.raycastDestination = crossHairTarget;
-        weapon.weaponRecoil.playerCamera = playerCamera;
+        weapon.weaponRecoil.characterAiming = characterAiming;
         weapon.weaponRecoil.rigController = rigController;
         weapon.transform.SetParent(weaponSlots[weaponSlotIndex], false);
         rigController.Play("equip_" + weapon.weaponName);
@@ -130,12 +146,14 @@ public class ActiveWeapon : MonoBehaviour
 
     private IEnumerator SwitchWeapon(int holsterIndex, int activateIndex)
     {
+        rigController.SetInteger("weapon_index", activateIndex);
         yield return StartCoroutine(HolsterWeapon(holsterIndex));
         yield return StartCoroutine(ActivateWeapon(activateIndex));
         activeWeaponIndex = activateIndex;
     }
     private IEnumerator HolsterWeapon(int index)
     {
+        isChangingWeapon = true;
         isHolsterd = true;
         var weapon = GetWeapon(index);
         if(weapon != null)
@@ -147,10 +165,12 @@ public class ActiveWeapon : MonoBehaviour
                 yield return new WaitForEndOfFrame();
             } while (rigController.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f);
         }
+        isChangingWeapon = false;
     }
 
     private IEnumerator ActivateWeapon(int index)
     {
+        isChangingWeapon = true;
         var weapon = GetWeapon(index);
         if(weapon != null)
         {
@@ -163,5 +183,7 @@ public class ActiveWeapon : MonoBehaviour
             } while (rigController.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f);
             isHolsterd = false;
         }
+        isChangingWeapon = false;
     }
+    
 }

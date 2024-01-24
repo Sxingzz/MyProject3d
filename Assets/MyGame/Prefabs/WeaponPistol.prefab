@@ -9685,12 +9685,12 @@ MonoBehaviour:
   isFiring: 0
   fireRate: 1
   bulletSpeed: 1000
-  bulletDrop: 0
+  bulletDrop: 300
   weaponRecoil: {fileID: 0}
   magazine: {fileID: 0}
-  ammoCount: 0
-  totalAmmo: 0
-  magazineSize: 0
+  ammoCount: 15
+  totalAmmo: 15
+  magazineSize: 2
 --- !u!114 &7704816382720741360
 MonoBehaviour:
   m_ObjectHideFlags: 0
