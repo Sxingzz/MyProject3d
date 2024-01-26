@@ -9691,6 +9691,7 @@ MonoBehaviour:
   ammoCount: 15
   totalAmmo: 15
   magazineSize: 2
+  damageAmount: 5
 --- !u!114 &7704816382720741360
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9703,12 +9704,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79bfeb36683e5834d9d29b1ddc96c5f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCamera: {fileID: 0}
+  characterAiming: {fileID: 0}
   cameraShake: {fileID: 0}
   rigController: {fileID: 0}
   recoilPattern:
   - {x: 0, y: 0}
   duration: 0
+  recoilModifier: 1
 --- !u!114 &-8850170498998087757
 MonoBehaviour:
   m_ObjectHideFlags: 0
