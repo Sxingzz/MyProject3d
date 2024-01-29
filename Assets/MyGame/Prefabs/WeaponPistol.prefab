@@ -9688,8 +9688,8 @@ MonoBehaviour:
   bulletDrop: 300
   weaponRecoil: {fileID: 0}
   magazine: {fileID: 0}
-  ammoCount: 15
-  totalAmmo: 15
+  ammoCount: 30
+  totalAmmo: 30
   magazineSize: 2
   damageAmount: 5
 --- !u!114 &7704816382720741360

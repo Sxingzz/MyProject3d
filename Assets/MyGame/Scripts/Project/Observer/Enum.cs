@@ -24,3 +24,9 @@ public enum WeaponSlot
     Primary = 0,
     Secondary = 1,
 }
+
+public enum AIStateID
+{
+    ChasePlayer,
+    Death,
+}
