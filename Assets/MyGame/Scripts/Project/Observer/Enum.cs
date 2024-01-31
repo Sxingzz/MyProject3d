@@ -29,4 +29,12 @@ public enum AIStateID
 {
     ChasePlayer,
     Death,
+    Idle,
+    FindWeapon
+}
+
+public enum SocketID
+{
+    Spine,
+
 }
