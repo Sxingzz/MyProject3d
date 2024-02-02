@@ -36,5 +36,7 @@ public enum AIStateID
 public enum SocketID
 {
     Spine,
+    RightHand,
+
 
 }
