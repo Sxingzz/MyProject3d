@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6148856122903366013}
   - component: {fileID: 5309306380318868531}
   - component: {fileID: 2213217746297942170}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Dust
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4702,7 +4702,7 @@ GameObject:
   - component: {fileID: 1905739780052969235}
   - component: {fileID: 6778993959135763107}
   - component: {fileID: 6544582746783856867}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: SM_Wep_Rifle_Laser_Mag_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4785,7 +4785,7 @@ GameObject:
   - component: {fileID: 219123312219676997}
   - component: {fileID: 5058869281428832745}
   - component: {fileID: 2608390751554721307}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: MuzzleFlash01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9681,7 +9681,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4188839968393767087}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Effect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9717,7 +9717,7 @@ GameObject:
   - component: {fileID: 3752900199520076894}
   - component: {fileID: 1950773967735995534}
   - component: {fileID: 1453075648589757365}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: SM_Wep_Rifle_Laser_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9803,7 +9803,7 @@ GameObject:
   - component: {fileID: 5003032429253233554}
   - component: {fileID: 6528070820524845342}
   - component: {fileID: 4763565314642816032}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: SM_Wep_Rifle_Laser_Trigger_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9888,7 +9888,7 @@ GameObject:
   - component: {fileID: 226979758923275625}
   - component: {fileID: -8599192034503914619}
   - component: {fileID: 4379590082112767298}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: WeaponRifle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10064,7 +10064,7 @@ GameObject:
   - component: {fileID: 4694759766801497977}
   - component: {fileID: 3600009563112871242}
   - component: {fileID: 5015901612563526733}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: HitEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14917,7 +14917,7 @@ GameObject:
   - component: {fileID: 4629558886546468767}
   - component: {fileID: 4636801833691330309}
   - component: {fileID: 4646952476813593215}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Magazine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15000,7 +15000,7 @@ GameObject:
   - component: {fileID: 7168619923505158147}
   - component: {fileID: 8802839904142361166}
   - component: {fileID: 6781214345090907460}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Decal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19907,7 +19907,7 @@ GameObject:
   - component: {fileID: 8638824047915872067}
   - component: {fileID: 1905966449006961036}
   - component: {fileID: 8607637519738510242}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19990,7 +19990,7 @@ GameObject:
   - component: {fileID: 2482911117312622750}
   - component: {fileID: 597246483092616252}
   - component: {fileID: 2197137753213821700}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Sparks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24673,7 +24673,7 @@ GameObject:
   - component: {fileID: 3174179394848951619}
   - component: {fileID: 4985879273133233970}
   - component: {fileID: 1390206201422428691}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: FlashHeadon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29569,7 +29569,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6617436053995316940}
-  m_Layer: 0
+  - component: {fileID: 7374679995731832222}
+  m_Layer: 10
   m_Name: RaycastOrigin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29591,3 +29592,15 @@ Transform:
   m_Children: []
   m_Father: {fileID: 6726794549965520429}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7374679995731832222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9087434977886140993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98235f88a7a9aeb43ad2ce1dd4c38611, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
