@@ -9676,14 +9676,13 @@ MonoBehaviour:
   weaponSlot: 1
   weaponName: pistol
   raycastOrigin: {fileID: 6617436053995316940}
-  raycastDestination: {fileID: 0}
   muzzleFlash:
   - {fileID: 5058869281428832745}
   - {fileID: 4985879273133233970}
   hitEffect: {fileID: 3600009563112871242}
   tracerEffect: {fileID: 4253816042641292018, guid: f89a00a7c7ade6e4fbf2ced78e5764a9, type: 3}
   isFiring: 0
-  fireRate: 1
+  fireRate: 10
   bulletSpeed: 1000
   bulletDrop: 300
   weaponRecoil: {fileID: 0}

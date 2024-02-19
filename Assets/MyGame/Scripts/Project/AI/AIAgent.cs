@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -46,5 +46,17 @@ public class AIAgent : MonoBehaviour
     void Update()
     {
         StateMachine.update();
+    }
+
+    public void DisableAll() // fix lỗi enemy chết bị văng
+    {
+        var allComponents = GetComponents<MonoBehaviour>();
+
+        foreach (var comp in allComponents)
+        {
+            comp.enabled = false;
+        }
+
+        navMeshAgent.enabled = false;
     }
 }

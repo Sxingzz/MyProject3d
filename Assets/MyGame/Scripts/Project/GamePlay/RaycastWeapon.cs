@@ -8,7 +8,7 @@ public class RaycastWeapon : MonoBehaviour
     public WeaponSlot weaponSlot;
     public string weaponName;
     public Transform raycastOrigin;
-    public Transform raycastDestination; // đích đến của cái tia
+    
     public ParticleSystem[] muzzleFlash;
     public ParticleSystem hitEffect;
 
@@ -68,25 +68,38 @@ public class RaycastWeapon : MonoBehaviour
         }
     }
 
-    public void StartFiring()
+    public void StartFiring() // hàm này dc gọi khi click chuột bắn
     {
         isFiring = true;
-        accumulatedTime = 0f;
-        FireBullet();
+
+        if (accumulatedTime > 0f)
+        {
+            accumulatedTime = 0f;
+        }
         weaponRecoil.Reset();
 
     }
 
-    public void UpdateFiring(float deltaTime) // giả lập đường cong viên đạn
+    public void UpdateWeapon(float deltaTime, Vector3 target) // giả lập đường cong viên đạn
+    {
+        if (isFiring)
+        {
+            UpdateFiring(deltaTime, target); // bắn tia raycast ra
+        }
+        UpdateBullets(deltaTime); // bắn tia line khác
+    }
+
+    private void UpdateFiring(float deltaTime, Vector3 target)
     {
         accumulatedTime += deltaTime;
         float fireInterval = 1.0f / fireRate;
-        while(accumulatedTime >= 0f)
+        while (accumulatedTime >= 0f)
         {
-            FireBullet();
+            FireBullet(target);
             accumulatedTime -= fireInterval;
         }
     }
+
     public void UpdateBullets(float deltaTime)
     {
         SimulateBullets(deltaTime);
@@ -150,7 +163,7 @@ public class RaycastWeapon : MonoBehaviour
         bullet.tracer.transform.position = end;
     }
 
-    private void FireBullet()
+    private void FireBullet(Vector3 target)
     {
         print($"Current Ammo: {ammoCount} - Current MagazineSize: {magazineSize}"); 
 
@@ -163,14 +176,18 @@ public class RaycastWeapon : MonoBehaviour
 
         PlayEffect();
 
-        Vector3 velocity = (raycastDestination.position - raycastOrigin.position).normalized * bulletSpeed;
+        Vector3 velocity = (target - raycastOrigin.position).normalized * bulletSpeed;
         if (ObjectPool.HasInstance)
         {
             var bullet = ObjectPool.Instance.GetPooledObject();
             bullet.Ative(raycastOrigin.position, velocity);
         }
 
-        weaponRecoil.GenerateRecoil(weaponName);
+        if (weaponRecoil)
+        {
+            weaponRecoil.GenerateRecoil(weaponName);
+        }
+        
 
         //ray.origin = raycastOrigin.position;
         //ray.direction = raycastDestination.position - raycastOrigin.position;

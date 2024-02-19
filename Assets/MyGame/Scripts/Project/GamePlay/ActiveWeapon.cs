@@ -48,7 +48,7 @@ public class ActiveWeapon : MonoBehaviour
 
             if (weapon.isFiring && notSprinting) // hàm này khi giữ chuột thì nó bắn liên tục
             {
-                weapon.UpdateFiring(Time.deltaTime);
+                weapon.UpdateWeapon(Time.deltaTime, crossHairTarget.position);
             }
             weapon.UpdateBullets(Time.deltaTime);
 
@@ -105,7 +105,6 @@ public class ActiveWeapon : MonoBehaviour
        
 
         weapon = newWeapon;
-        weapon.raycastDestination = crossHairTarget;
         weapon.weaponRecoil.characterAiming = characterAiming;
         weapon.weaponRecoil.rigController = rigController;
         weapon.transform.SetParent(weaponSlots[weaponSlotIndex], false);

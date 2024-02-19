@@ -4,17 +4,40 @@ using UnityEngine;
 
 public class AIWeapon : MonoBehaviour
 {
+    public float inaccuracy = 0.4f;
     private Animator animator;
     private RaycastWeapon currentWeapon;
     private MeshSocketController meshSocketController;
     private AIWeaponIK weaponIK;
     private Transform currentTarget;
+    private bool activeWeapon = false;
 
     private void Start()
     {
         animator = GetComponent<Animator>();
         meshSocketController = GetComponent<MeshSocketController>();
         weaponIK = GetComponent<AIWeaponIK>();
+    }
+    private void Update()
+    {
+        if (currentTarget && currentWeapon && activeWeapon)
+        {
+            Vector3 target = currentTarget.position + weaponIK.targetOffset;
+            target += Random.insideUnitSphere * inaccuracy;
+            currentWeapon.UpdateWeapon(Time.deltaTime, target);
+        }
+    }
+
+    public void SetFiring(bool enable)
+    {
+        if (enable)
+        {
+            currentWeapon.StartFiring();
+        }
+        else
+        {
+            currentWeapon.StopFiring();
+        }
     }
     public void EquipWeapon(RaycastWeapon weapon)
     {
@@ -36,6 +59,7 @@ public class AIWeapon : MonoBehaviour
             yield return null;
         }
         weaponIK.SetAimTransform(currentWeapon.raycastOrigin);
+        activeWeapon = true;
     }   
     public bool HasWeapon()
     {
