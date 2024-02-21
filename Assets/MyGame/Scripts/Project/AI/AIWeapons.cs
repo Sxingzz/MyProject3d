@@ -60,7 +60,32 @@ public class AIWeapon : MonoBehaviour
         }
         weaponIK.SetAimTransform(currentWeapon.raycastOrigin);
         activeWeapon = true;
-    }   
+    }
+
+    public void DeActiveWeapon()
+    {
+        SetTarget(null);
+        SetFiring(false);
+        StartCoroutine(HolsterWeapon());
+    }
+
+    private IEnumerator HolsterWeapon()
+    {
+        activeWeapon = false;
+        animator.SetBool("Equip", false);
+        yield return new WaitForSeconds(0.5f);
+        while (animator.GetCurrentAnimatorStateInfo(1).normalizedTime < 1.0f)
+        {
+            if (animator.GetCurrentAnimatorStateInfo(1).normalizedTime >= 0.7f)
+            {
+                meshSocketController.Attach(currentWeapon.transform, SocketID.Spine);
+            }
+            yield return null;
+        }
+        weaponIK.SetAimTransform(currentWeapon.raycastOrigin);
+        
+    }
+
     public bool HasWeapon()
     {
         return currentWeapon != null;

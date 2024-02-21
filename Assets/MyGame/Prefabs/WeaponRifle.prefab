@@ -9929,7 +9929,6 @@ MonoBehaviour:
   weaponSlot: 0
   weaponName: rifle
   raycastOrigin: {fileID: 6617436053995316940}
-  raycastDestination: {fileID: 0}
   muzzleFlash:
   - {fileID: 5058869281428832745}
   - {fileID: 4985879273133233970}
@@ -9944,7 +9943,10 @@ MonoBehaviour:
   ammoCount: 30
   totalAmmo: 30
   magazineSize: 2
-  damageAmount: 10
+  damageAmount: 5
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 2048
 --- !u!114 &226979758923275625
 MonoBehaviour:
   m_ObjectHideFlags: 0
