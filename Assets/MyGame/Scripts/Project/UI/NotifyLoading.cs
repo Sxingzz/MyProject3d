@@ -20,6 +20,7 @@ public class NotifyLoading : BaseNotify
     public override void Show(object data)
     {
         base.Show(data);
+
     }
 
     public void SetProgress(float value)

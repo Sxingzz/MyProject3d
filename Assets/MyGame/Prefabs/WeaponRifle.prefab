@@ -9943,7 +9943,7 @@ MonoBehaviour:
   ammoCount: 30
   totalAmmo: 30
   magazineSize: 2
-  damageAmount: 5
+  damageAmount: 10
   layerMask:
     serializedVersion: 2
     m_Bits: 2048

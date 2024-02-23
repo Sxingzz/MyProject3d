@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : BaseManager<GameManager>
 {
@@ -27,28 +28,32 @@ public class GameManager : BaseManager<GameManager>
             }
         }
 
-        // ví dụ về cách sử dụng action và các hàm liên quan
-        //StartCoroutine(TestCoroutine(OnTestStart, OnTestComplete));
+    }
+    public void RestartGame()
+    {
+        if (UIManager.HasInstance)
+        {
+            OverlapFade overlapFade = UIManager.Instance.GetExistOverlap<OverlapFade>();
+            overlapFade.Show(null);
+            overlapFade.Fade(2f, () =>
+            {
+                overlapFade.Hide();
+                UIManager.Instance.ShowScreen<ScreenHome>();
+                LoadScene("Loading");
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.None;
+            });
+        }
+        if (CameraManager.HasInstance)
+        {
+            CameraManager.Instance.ResetKillCam();
+        }
     }
 
-    //Void OnNotifyLoadingComplete()
-    //{
-    //    Debug.log("NotifyLoading Complete ");
-    //}
-
-    //private IEnumerable TestCoroutine(Action Onstart = null, Action Oncomplete = null)
-    //{
-    //    OnStart?.Invoke();
-    //    yield return new WaitForSeconds(1f);
-    //    OnComplete?.Invoke();
-    //}
-    //void OnTestStart()
-    //{
-    //    Debug.Log("Start");
-    //}
-    //void OnTestComplete()
-    //{
-    //    Debug.Log("Complete");
-    //}
+    public void LoadScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
+    }
+    
    
 }

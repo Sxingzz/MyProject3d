@@ -30,18 +30,23 @@ public class AIWeapon : MonoBehaviour
 
     public void SetFiring(bool enable)
     {
-        if (enable)
+        if (currentWeapon)
         {
-            currentWeapon.StartFiring();
+            if (enable)
+            {
+                currentWeapon.StartFiring();
+            }
+            else
+            {
+                currentWeapon.StopFiring();
+            }
         }
-        else
-        {
-            currentWeapon.StopFiring();
-        }
+       
     }
     public void EquipWeapon(RaycastWeapon weapon)
     {
         currentWeapon = weapon;
+        currentWeapon.equipWwaponBy = EquipWeaponBy.AI;
         meshSocketController.Attach(currentWeapon.transform, SocketID.Spine);
     }
 
@@ -71,18 +76,22 @@ public class AIWeapon : MonoBehaviour
 
     private IEnumerator HolsterWeapon()
     {
-        activeWeapon = false;
-        animator.SetBool("Equip", false);
-        yield return new WaitForSeconds(0.5f);
-        while (animator.GetCurrentAnimatorStateInfo(1).normalizedTime < 1.0f)
+        if (animator)
         {
-            if (animator.GetCurrentAnimatorStateInfo(1).normalizedTime >= 0.7f)
+            activeWeapon = false;
+            animator.SetBool("Equip", false);
+            yield return new WaitForSeconds(0.5f);
+            while (animator.GetCurrentAnimatorStateInfo(1).normalizedTime < 1.0f)
             {
-                meshSocketController.Attach(currentWeapon.transform, SocketID.Spine);
+                if (animator.GetCurrentAnimatorStateInfo(1).normalizedTime >= 0.7f)
+                {
+                    meshSocketController.Attach(currentWeapon.transform, SocketID.Spine);
+                }
+                yield return null;
             }
-            yield return null;
+            weaponIK.SetAimTransform(currentWeapon.raycastOrigin);
         }
-        weaponIK.SetAimTransform(currentWeapon.raycastOrigin);
+        
         
     }
 

@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using DG.Tweening;
 
 public class PlayerHealth : Health
 {
@@ -39,5 +41,16 @@ public class PlayerHealth : Health
         {
             CameraManager.Instance.EnableKillCam();
         }
+
+        DOVirtual.DelayedCall(2f, () =>
+        {
+            if (UIManager.HasInstance)
+            {
+                string message = "Lose";
+                UIManager.Instance.ShowPopup<PopupMessage>(data: message);
+            }
+        });
+        
+        
     }
 }

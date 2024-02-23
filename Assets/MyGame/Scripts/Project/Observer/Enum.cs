@@ -6,6 +6,7 @@
     RIGHT_MOUSE_CLICK,
     UPDATE_PLAYER_INFO,
     RELOAD_ANIMATION_EVENT,
+    UPDATE_AMMO
 
 }
 
@@ -38,6 +39,9 @@ public enum SocketID
 {
     Spine,
     RightHand,
-
-
+}
+public enum EquipWeaponBy
+{
+    AI,
+    Player
 }

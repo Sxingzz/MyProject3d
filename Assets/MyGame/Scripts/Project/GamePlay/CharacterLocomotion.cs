@@ -49,6 +49,7 @@ public class CharacterLocomotion : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Jump();
+            OnJump();
         }
 
         UpdateIsSprinting();
@@ -141,5 +142,19 @@ public class CharacterLocomotion : MonoBehaviour
         velocity = animator.velocity * jumpDamp * groundSpeed;
         velocity.y = jumpVelocity;
         animator.SetBool("IsJumping", true);
+    }
+    public void OnFootStep()
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_FOOTSTEP);
+        }
+    }
+    public void OnJump()
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_FOOTSTEP);
+        }
     }
 }

@@ -20,6 +20,8 @@ public class NotifyLoadingGame : BaseNotify
     public override void Show(object data)
     {
         base.Show(data);
+        StopAllCoroutines();
+        StartCoroutine(LoadScene());
     }
 
     public override void Hide()
