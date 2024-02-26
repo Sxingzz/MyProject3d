@@ -8,8 +8,9 @@ using Cinemachine;
 public class CharacterAiming : MonoBehaviour
 {
    
-    public float turnSpeed = 15f;
-    public float aimDuration = 0.3f;
+    private float turnSpeed = 15f;
+    
+
     public AxisState xAxis;
     public AxisState yAxis;
     public Transform cameraLookAt;
@@ -20,7 +21,15 @@ public class CharacterAiming : MonoBehaviour
 
     private int isAimingParam = Animator.StringToHash("IsAiming");
     private bool isAiming;
-   
+
+    private void Awake()
+    {
+        if (DataManager.HasInstance)
+        {
+            turnSpeed = DataManager.Instance.DataConfig.TurnSpeed;
+        }
+    }
+
 
     // Start is called before the first frame update
     void Start()

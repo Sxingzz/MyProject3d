@@ -14,11 +14,21 @@ public class AIAgent : MonoBehaviour
     public UIHealthBar UIHealthBar;
     public AIWeapon weapons;
 
-    public float maxTime = 1f;
-    public float maxDistance = 5f;
+    public float maxTime;
+    public float maxDistance;
     public float dieForce;
-    public float maxSightDistance = 10f;
+    public float maxSightDistance;
 
+    private void Awake()
+    {
+        if (DataManager.HasInstance)
+        {
+            maxTime = DataManager.Instance.DataConfig.maxTime;
+            maxDistance = DataManager.Instance.DataConfig.maxDistance;
+            dieForce = DataManager.Instance.DataConfig.dieForce;
+            maxSightDistance = DataManager.Instance.DataConfig.maxSightDistance;
+        }
+    }
 
     // Start is called before the first frame update
     void Start()

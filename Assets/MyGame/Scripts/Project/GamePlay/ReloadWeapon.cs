@@ -68,6 +68,8 @@ public class ReloadWeapon : MonoBehaviour
 
     private void DetachMagazine()
     {
+        
+
         RaycastWeapon weapon = activeWeapon.GetActiveWeapon();
         magazineHand = Instantiate(weapon.magazine, leftHand, true);
         weapon.magazine.SetActive(false);
@@ -89,6 +91,11 @@ public class ReloadWeapon : MonoBehaviour
 
     private void AttachMagazine()
     {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_INSERTMAGAZINE);
+        }
+
         RaycastWeapon weapon = activeWeapon.GetActiveWeapon();
         weapon.magazine.SetActive(true);
         Destroy(magazineHand);

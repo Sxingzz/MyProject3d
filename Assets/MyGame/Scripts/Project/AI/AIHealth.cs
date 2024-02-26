@@ -16,6 +16,13 @@ public class AIHealth : Health
         agent = GetComponent<AIAgent>();
         meshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
         healthBar = GetComponentInChildren<UIHealthBar>();
+
+        if (DataManager.HasInstance)
+        {
+            blinkDuration = DataManager.Instance.DataConfig.BlinkDuration;
+            maxHealth = DataManager.Instance.DataConfig.AIMaxHealth;
+            currentHealth = maxHealth;
+        }
     }
     protected override void OnDamaged(Vector3 direction)
     {

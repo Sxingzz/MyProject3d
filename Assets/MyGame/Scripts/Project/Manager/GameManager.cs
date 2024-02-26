@@ -7,7 +7,15 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : BaseManager<GameManager>
 {
-    private float notifyLoadingTime = 5f;
+    private float notifyLoadingTime;
+    protected override void Awake()
+    {
+        base.Awake();
+        if (DataManager.HasInstance)
+        {
+            notifyLoadingTime = DataManager.Instance.DataConfig.notifyLoadingTime;
+        }
+    }
 
     void Start()
     {

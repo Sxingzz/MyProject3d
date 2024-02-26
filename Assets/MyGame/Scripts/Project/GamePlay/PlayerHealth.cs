@@ -21,6 +21,12 @@ public class PlayerHealth : Health
         activeWeapon = GetComponent<ActiveWeapon>();
         characterAiming = GetComponent<CharacterAiming>();
         postProcessing = FindObjectOfType<Volume>().profile;
+
+        if (DataManager.HasInstance)
+        {
+            maxHealth = DataManager.Instance.DataConfig.PlayermaxHealth;
+            currentHealth = maxHealth;
+        }
     }
     protected override void OnDamaged(Vector3 direction)
     {

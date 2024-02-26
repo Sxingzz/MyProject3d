@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ee7aa9621aaae84d82b6367fccc01f3, type: 3}
+  m_Name: New Data Config
+  m_EditorClassIdentifier: 
+  JumpHeight: 3
+  Gravity: 20
+  StepDown: 0.3
+  AirControl: 2.5
+  JumpDamp: 0.5
+  GroundSpeed: 1.2
+  TurnSpeed: 15
+  AimDuration: 0.3
+  PlayermaxHealth: 100
+  AIMaxHealth: 100
+  BlinkDuration: 0.1
+  maxTime: 1
+  maxDistance: 5
+  dieForce: 10
+  maxSightDistance: 10
+  inaccuracy: 0.4
+  angleLimit: 90
+  distanceLimit: 1.5
+  test2: 0

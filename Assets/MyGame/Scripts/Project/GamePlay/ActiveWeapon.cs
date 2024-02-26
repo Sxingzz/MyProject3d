@@ -177,12 +177,18 @@ public class ActiveWeapon : MonoBehaviour
 
     private IEnumerator ActivateWeapon(int index)
     {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_PISTOLCOCKING);
+        }
+
         isChangingWeapon = true;
         var weapon = GetWeapon(index);
         if(weapon != null)
         {
             rigController.SetBool("holster_weapon", false);
-            rigController.Play("equip_" + weapon.weaponName);
+            rigController.Play("equip_" + weapon.weaponName); // LÀM ÂM THANH KỸ HƠN THÌ LÀM TRONG ANIMATION CŨA CÂY SÚNG ĐÓ
+
             yield return new WaitForSeconds(0.1f);
             do
             {

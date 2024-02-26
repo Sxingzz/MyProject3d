@@ -64,4 +64,19 @@ public class BaseUIElement : MonoBehaviour
     {
 
     }
+
+    public virtual void OnButtonClickSound() // click có âm thanh
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_BTNCLICK);
+        }
+    }
+    public virtual void OnButtonHoverSound() // Rê chuột có âm thanh
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(AUDIO.SE_BTNHOVER);
+        }
+    }
 }
