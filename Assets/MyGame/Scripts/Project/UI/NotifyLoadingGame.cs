@@ -39,6 +39,7 @@ public class NotifyLoadingGame : BaseNotify
         {
             loadingSlider.value = asyncOperation.progress;
             loadingPercentText.SetText($"LOADING SCENES: {asyncOperation.progress * 100}%");
+            
             if (asyncOperation.progress >= 0.9f)
             {
                 loadingSlider.value = 1f;

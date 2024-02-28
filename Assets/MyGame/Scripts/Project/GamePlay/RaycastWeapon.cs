@@ -39,6 +39,8 @@ public class RaycastWeapon : MonoBehaviour
     public int magazineSize;
     public float damageAmount = 10f;
     public LayerMask layerMask;
+    public AnimatorOverrideController controller;
+    
 
     private void Awake()
     {

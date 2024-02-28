@@ -40,6 +40,13 @@ public class Health : MonoBehaviour
         }
     }
 
+    public void TakeHealth(float amount)
+    {
+        currentHealth += amount;
+        currentHealth = Mathf.Min(currentHealth, maxHealth);
+        // Onhealth(amount)
+    }
+
     private void Die(Vector3 direction)
     {
         OnDeath(direction);
@@ -49,6 +56,10 @@ public class Health : MonoBehaviour
     public bool IsDead()
     {
         return currentHealth <= 0;
+    }
+    protected virtual void OnHealth(float amount)
+    {
+
     }
 
     protected virtual void OnStart()

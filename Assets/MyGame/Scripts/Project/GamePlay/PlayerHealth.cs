@@ -30,7 +30,7 @@ public class PlayerHealth : Health
     }
     protected override void OnDamaged(Vector3 direction)
     {
-        if(postProcessing.TryGet(out vignette))
+        if (postProcessing.TryGet(out vignette))
         {
             float percent = 1.0f - (currentHealth / maxHealth);
             vignette.intensity.value = percent * 0.4f;
@@ -56,7 +56,7 @@ public class PlayerHealth : Health
                 UIManager.Instance.ShowPopup<PopupMessage>(data: message);
             }
         });
-        
-        
     }
+
+    // overrider hàm onheath
 }
